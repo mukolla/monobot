@@ -1,0 +1,15 @@
+db_file: "mono-bot.db"
+bot_url: "http://t.me/mukolla_mono_bot"
+
+message:
+  response:
+    start: "Привіт! Я монобот від Миколи і готовий показати тобі твій Баланс. Перейди за посиланням https://api.monobank.ua/ що б згенерувати токен для авторизації і надішли його у відповідь."
+    savedSuccessfully: "Токен доступу успіщно зберженно до сховища"
+    alreadyUsed: "Ви авторизовані, Бот готовий до використання"
+    unknown_command: "You send command unknown command"
+  errors:
+    default: "Халлепа, викиникла невідома помилка"
+    unknownError: "Халлепа, unknownError"
+    authTokenNotFound: "auth token not found"
+    unauthorized: "Ви не атворизовані, використання команду /start для авторизації"
+    getBalance: "Помилка під час отримання вашого балансу"
