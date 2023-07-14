@@ -4,6 +4,7 @@ import (
 	"errors"
 	"github.com/boltdb/bolt"
 	"github.com/mukolla/monobot/pkg/repository"
+	"log"
 	"strconv"
 )
 
@@ -40,6 +41,35 @@ func (r *TokenRepository) Get(chatID int64, bucket repository.Bucket) (string, e
 	}
 
 	return token, nil
+}
+
+func (r *TokenRepository) GetAll(bucket repository.Bucket) (map[string]string, error) {
+	results := make(map[string]string)
+	err := r.db.View(func(tx *bolt.Tx) error {
+		b := tx.Bucket([]byte(bucket))
+		c := b.Cursor()
+
+		for key, value := c.First(); key != nil; key, value = c.Next() {
+			results[string(key)] = string(value)
+		}
+
+		return nil
+	})
+
+	if err != nil {
+		return nil, err
+	}
+
+	if len(results) == 0 {
+		return nil, errors.New("no data found in the bucket")
+	}
+
+	// Виведення результатів у логи
+	for key, value := range results {
+		log.Printf("Key: %s, Value: %s\n", key, value)
+	}
+
+	return results, nil
 }
 
 func intToBytes(v int64) []byte {

@@ -9,4 +9,5 @@ const (
 type TokenRepository interface {
 	Save(chatID int64, token string, bucket Bucket) error
 	Get(chatID int64, bucket Bucket) (string, error)
+	GetAll(bucket Bucket) (map[string]string, error)
 }

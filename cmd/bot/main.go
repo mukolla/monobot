@@ -1,10 +1,8 @@
 package main
 
 import (
-	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api"
-
 	"github.com/boltdb/bolt"
-
+	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api"
 	"github.com/mukolla/monobot/pkg/config"
 	"github.com/mukolla/monobot/pkg/repository"
 	"github.com/mukolla/monobot/pkg/repository/boltdb"
@@ -23,7 +21,7 @@ func main() {
 		log.Panic(err)
 	}
 
-	bot.Debug = true
+	//bot.Debug = true
 
 	db, err := initDb(cfg)
 	if err != nil {
@@ -31,8 +29,9 @@ func main() {
 	}
 
 	tokenRepository := boltdb.NewTokenRepository(db)
+	transactionRepository := boltdb.NewCashRepository(db)
 
-	telegramBot := telegram.NewBot(bot, tokenRepository, cfg.Message)
+	telegramBot := telegram.NewBot(bot, tokenRepository, transactionRepository, cfg.Message)
 
 	telegramBot.Start()
 }
@@ -48,7 +47,22 @@ func initDb(cfg *config.Config) (*bolt.DB, error) {
 		if err != nil {
 			return err
 		}
+		return nil
+	})
 
+	err = db.Update(func(tx *bolt.Tx) error {
+		_, err := tx.CreateBucketIfNotExists([]byte(repository.TransactionCash))
+		if err != nil {
+			return err
+		}
+		return nil
+	})
+
+	err = db.Update(func(tx *bolt.Tx) error {
+		_, err := tx.CreateBucketIfNotExists([]byte(repository.UserInfoCash))
+		if err != nil {
+			return err
+		}
 		return nil
 	})
 

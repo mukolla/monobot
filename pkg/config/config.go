@@ -18,11 +18,13 @@ type Message struct {
 }
 
 type Errors struct {
-	Default           string `mapstructure:"default"`
-	UnknownError      string `mapstructure:"unknownError"`
-	AuthTokenNotFound string `mapstructure:"authTokenNotFound"`
-	Unauthorized      string `mapstructure:"unauthorized"`
-	GetBalance        string `mapstructure:"getBalance"`
+	Default                string `mapstructure:"default"`
+	UnknownError           string `mapstructure:"unknownError"`
+	AuthTokenNotFound      string `mapstructure:"authTokenNotFound"`
+	Unauthorized           string `mapstructure:"unauthorized"`
+	GetBalance             string `mapstructure:"getBalance"`
+	GetTransactionList     string `mapstructure:"getTransactionList"`
+	AccountNotFoundByToken string `mapstructure:"accountNotFoundByToken"`
 }
 
 type Response struct {
@@ -30,6 +32,7 @@ type Response struct {
 	SavedSuccessfully string `mapstructure:"savedSuccessfully"`
 	UnknownCommand    string `mapstructure:"unknown_command"`
 	AlreadyUsed       string `mapstructure:"alreadyUsed"`
+	ChoiceAccountUsed string `mapstructure:"choiceAccountUsed"`
 }
 
 func Init() (*Config, error) {

@@ -9,12 +9,13 @@ import (
 type Bot struct {
 	bot             *tgbotapi.BotAPI
 	tokenRepository repository.TokenRepository
+	cash            repository.CashRepository
 	redirectURL     string
 	messages        config.Message
 }
 
-func NewBot(bot *tgbotapi.BotAPI, tr repository.TokenRepository, messages config.Message) *Bot {
-	return &Bot{bot: bot, tokenRepository: tr, messages: messages}
+func NewBot(bot *tgbotapi.BotAPI, tr repository.TokenRepository, transactionRepository repository.CashRepository, messages config.Message) *Bot {
+	return &Bot{bot: bot, tokenRepository: tr, cash: transactionRepository, messages: messages}
 }
 
 func (b *Bot) Start() error {
@@ -41,7 +42,7 @@ func (b *Bot) handleUpdates(updates tgbotapi.UpdatesChannel) {
 			continue
 		}
 
-		if err := b.handleMessage(update.Message); err != nil {
+		if _, err := b.handleMessage(update.Message); err != nil {
 			b.handleError(update.Message.Chat.ID, err)
 		}
 	}
