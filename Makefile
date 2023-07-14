@@ -11,4 +11,9 @@ build-image:
 	docker build -t monobot:v0.1 .
 
 start-container:
-	docker run --name talegram-monobot -p 8183:8183 --env-file .env monobot:v0.1
+	docker run --name talegram-monobot --env-file .env monobot:v0.1
+
+push-dockerhub:
+	docker build -t monobot:v0.1 .
+	docker tag monobot:v0.1 mukolla/monobot:latest
+	docker push mukolla/monobot:latest

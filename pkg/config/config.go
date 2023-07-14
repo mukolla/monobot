@@ -6,7 +6,6 @@ import (
 
 type Config struct {
 	TelegramToken  string //must BindEnv
-	MonoBankToken  string //must BindEnv
 	TelegramBotUrl string `mapstructure:"bot_url"`
 	DbPath         string `mapstructure:"db_file"`
 	Message        Message
@@ -71,11 +70,6 @@ func parserEnv(cfg *Config) error {
 		return err
 	}
 
-	if err := viper.BindEnv("mono_bank_token"); err != nil {
-		return err
-	}
-
 	cfg.TelegramToken = viper.GetString("token")
-	cfg.MonoBankToken = viper.GetString("mono_bank_token")
 	return nil
 }
